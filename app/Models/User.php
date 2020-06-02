@@ -9,7 +9,7 @@ class User
 
     public function __construct($id = false)
     {
-        if($id){
+        if($id !== false){
             $this->user = User::getUser($id);
         }
     }
@@ -19,7 +19,7 @@ class User
          $result = false;
          if($content && isset($content['users'])){
              $users = array_column($content['users'],'name','id');
-            if($id){
+            if($id !== false){
                 if(array_search($id,array_keys($users))!== false){
                     $idx = array_search($id,array_keys($users));
                     $result = $content['users'][$idx];

@@ -47,6 +47,10 @@ class ComposerStaticInitfc8ca014056a507fbc4ef3e4848205d8
             'Nyholm\\Psr7\\' => 12,
             'Nyholm\\Psr7Server\\' => 18,
         ),
+        'M' => 
+        array (
+            'Monolog\\' => 8,
+        ),
         'L' => 
         array (
             'Laminas\\ZendFrameworkBridge\\' => 28,
@@ -106,6 +110,10 @@ class ComposerStaticInitfc8ca014056a507fbc4ef3e4848205d8
         'Nyholm\\Psr7Server\\' => 
         array (
             0 => __DIR__ . '/..' . '/nyholm/psr7-server/src',
+        ),
+        'Monolog\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/monolog/monolog/src/Monolog',
         ),
         'Laminas\\ZendFrameworkBridge\\' => 
         array (

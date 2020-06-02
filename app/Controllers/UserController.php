@@ -11,7 +11,7 @@ class UserController{
         else $result = User::getUser();
         if(!$result){
             $status = 404;
-            $answer = ['result' => 'Пользователи не найдены'];
+            $answer = ['result' => 'Пользователь не найдены'];
         } else {
             $status = 200;
             $answer = ['result' => $result];
@@ -25,7 +25,7 @@ class UserController{
         $params = file_get_contents('php://input');
         $params = json_decode($params,true);
 
-        if(isset($params['name']) && trim($params['name'])){
+        if(isset($params['name']) && !empty(trim($params['name']))){
             $result = User::createUser($params['name']);
             $status = 201;
             $answer = ['result' => $result];
@@ -41,7 +41,7 @@ class UserController{
     public function editUser(Request $request, Response $response, $args){
         $params = file_get_contents('php://input');
         $params = json_decode($params,true);
-        if(isset($params['name']) && trim($params['name']) && isset($params['id']) && trim($params['id'])){
+        if(isset($params['name']) && !empty(trim($params['name'])) && isset($params['id']) && trim($params['id']) != '' && is_numeric($params['id'])){
             $user = new User($params['id']);
             $result = $user->editUser($params['name']);
             if($result == 'Пользователь не найден'){
@@ -50,12 +50,18 @@ class UserController{
                 $status = 200;
             }
             $answer = ['result' => $result];
-        } elseif(!isset($params['name']) || !trim($params['name'])) {
+        } elseif(!isset($params['name']) || empty(trim($params['name']))) {
             $status = 400;
             $answer = ['result' => 'Укажите имя'];
-        } elseif(!isset($params['id']) || !trim($params['id'])) {
+        } elseif(!isset($params['id']) || trim($params['id']) == '') {
             $status = 400;
             $answer = ['result' => 'Укажите ID'];
+        } elseif(!is_numeric($params['id'])){
+            $status = 400;
+            $answer = ['result' => 'Введите корректный ID'];
+        } else {
+            $status = 500;
+            $answer = ['result' => 'При обработке данных возникла ошибка'];
         }
         $newResponse = $response->withStatus($status)->withHeader('Content-Type','application/json');
         $newResponse->getBody()->write(json_encode($answer,JSON_UNESCAPED_UNICODE));
@@ -65,7 +71,7 @@ class UserController{
     public function deleteUser(Request $request, Response $response, $args){
         $params = file_get_contents('php://input');
         $params = json_decode($params,true);
-        if(isset($params['id']) && trim($params['id'])){
+        if(isset($params['id']) && trim($params['id'] != '' && is_numeric($params['id']))){
             $user = new User($params['id']);
             $result = $user->deleteUser();
             if(!$result == 'Пользователь не найден'){
@@ -74,6 +80,9 @@ class UserController{
                 $status = 200;
             }
             $answer = ['result' => $result];
+        } elseif(!is_numeric($params['id'])){
+            $status = 400;
+            $answer = ['result' => 'Введите корректный ID'];
         } else {
             $status = 400;
             $answer = ['result' => 'Укажите ID'];
