@@ -11,7 +11,7 @@ class UserController{
         else $result = User::getUser();
         if(!$result){
             $status = 404;
-            $answer = ['result' => 'Пользователь не найдены'];
+            $answer = ['result' => 'Пользователь не найден'];
         } else {
             $status = 200;
             $answer = ['result' => $result];
